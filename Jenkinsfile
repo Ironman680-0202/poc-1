@@ -37,8 +37,7 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
-                sh 'chmod +x dependency-check.sh'
-                sh './dependency-check.sh'
+                sh 'bash dependency-check.sh'
             }
         }
 
