@@ -47,9 +47,9 @@ pipeline {
         stage('Trivy Image Scan') {
     steps {
         sh '''
-        mkdir -p /opt/trivy-cache
+        mkdir -p trivy-cache
         trivy image \
-          --cache-dir /opt/trivy-cache \
+          --cache-dir trivy-cache \
           --severity HIGH,CRITICAL \
           dockerhubusername/poc-1:latest
         '''
