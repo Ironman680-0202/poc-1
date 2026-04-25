@@ -23,17 +23,14 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    dir('app') {
-                        sh """
-                        mvn sonar:sonar \
-                          -Dsonar.login=${SONAR_TOKEN}
-                        """
-                    }
-                }
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            dir('app') {
+                sh 'mvn sonar:sonar'
             }
         }
+    }
+}
 
         stage('OWASP Dependency Check') {
             steps {
