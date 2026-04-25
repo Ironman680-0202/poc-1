@@ -45,10 +45,16 @@ pipeline {
         }
 
         stage('Trivy Image Scan') {
-            steps {
-                sh 'trivy image --severity HIGH,CRITICAL $IMAGE_NAME:latest'
-            }
-        }
+    steps {
+        sh '''
+        mkdir -p /opt/trivy-cache
+        trivy image \
+          --cache-dir /opt/trivy-cache \
+          --severity HIGH,CRITICAL \
+          dockerhubusername/poc-1:latest
+        '''
+    }
+}
 
         stage('Docker Push') {
             steps {
