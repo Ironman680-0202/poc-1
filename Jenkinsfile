@@ -22,11 +22,12 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-    steps {
-        withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+
+stage('SonarQube Analysis') {
+    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+        dir('app') {
             sh '''
-            mvn clean verify sonar:sonar \
+              mvn clean verify sonar:sonar \
               -Dsonar.projectKey=poc-1 \
               -Dsonar.host.url=http://localhost:9000 \
               -Dsonar.login=$SONAR_TOKEN
@@ -34,6 +35,7 @@ pipeline {
         }
     }
 }
+
 
         stage('OWASP Dependency Check') {
             steps {
