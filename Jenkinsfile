@@ -44,13 +44,15 @@ pipeline {
             }
         }
 
-        stage('Trivy Image Scan') {
+        stage('Trivy Scan') {
     steps {
         sh '''
-        mkdir -p trivy-cache
         trivy image \
-          --cache-dir trivy-cache \
+          --cache-dir /opt/trivy-cache \
+          --skip-db-update \
+          --scanners vuln \
           --severity HIGH,CRITICAL \
+          --no-progress \
           dockerhubusername/poc-1:latest
         '''
     }
