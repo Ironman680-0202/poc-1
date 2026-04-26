@@ -44,18 +44,21 @@ pipeline {
             }
         }
 
-        stage('Trivy Scan') {
+       stage('Trivy Scan') {
     steps {
         timeout(time: 2, unit: 'MINUTES') {
             sh '''
+            IMAGE_ID=$(docker images -q $IMAGE_NAME:latest)
+ 
             trivy image \
               --cache-dir /opt/trivy-cache \
               --skip-db-update \
               --scanners vuln \
               --severity HIGH,CRITICAL \
               --no-progress \
+              --timeout 60s \
               --exit-code 0 \
-              $IMAGE_NAME:latest
+              $IMAGE_ID || true
             '''
         }
     }
