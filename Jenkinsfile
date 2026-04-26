@@ -46,17 +46,18 @@ pipeline {
 
         stage('Trivy Scan') {
     steps {
-        sh '''
-        trivy image \
-  --cache-dir /opt/trivy-cache \
-  --skip-db-update \
-  --skip-java-db-update \
-  --scanners vuln \
-  --severity HIGH,CRITICAL \
-  --no-progress \
-  --exit-code 0 \
-  $IMAGE_NAME:latest
-        '''
+        timeout(time: 2, unit: 'MINUTES') {
+            sh '''
+            trivy image \
+              --cache-dir /opt/trivy-cache \
+              --skip-db-update \
+              --scanners vuln \
+              --severity HIGH,CRITICAL \
+              --no-progress \
+              --exit-code 0 \
+              $IMAGE_NAME:latest
+            '''
+        }
     }
 }
 
