@@ -50,11 +50,11 @@ pipeline {
         trivy image \
   --cache-dir /opt/trivy-cache \
   --skip-db-update \
+  --skip-java-db-update \
   --scanners vuln \
   --severity HIGH,CRITICAL \
   --no-progress \
   --exit-code 0 \
-  --java-db-skip-update \
   $IMAGE_NAME:latest
         '''
     }
