@@ -84,7 +84,7 @@ stage('Trivy Scan') {
             steps {
                 sh '''
                   docker rm -f poc-1 || true
-                  docker run -d --name poc-1 -p 8081:8080 $IMAGE_NAME:latest
+                  docker run --name poc-1 $IMAGE_NAME:latest
                 '''
             }
         }
