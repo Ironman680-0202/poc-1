@@ -48,12 +48,14 @@ pipeline {
     steps {
         sh '''
         trivy image \
-          --cache-dir /opt/trivy-cache \
-          --skip-db-update \
-          --scanners vuln \
-          --severity HIGH,CRITICAL \
-          --no-progress \
-          dockerhubusername/poc-1:latest
+  --cache-dir /opt/trivy-cache \
+  --skip-db-update \
+  --scanners vuln \
+  --severity HIGH,CRITICAL \
+  --no-progress \
+  --exit-code 0 \
+  --java-db-skip-update \
+  $IMAGE_NAME:latest
         '''
     }
 }
