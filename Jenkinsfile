@@ -44,11 +44,6 @@ pipeline {
             }
         }
 
-        stage('Archive OWASP Report') {
-    steps {
-        archiveArtifacts artifacts: 'dependency-check-report/**/*', allowEmptyArchive: true
-    }
-}
 
         stage('Docker Build') {
             steps {
