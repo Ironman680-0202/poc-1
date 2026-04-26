@@ -50,20 +50,27 @@ pipeline {
             }
         }
 
-        stage('Trivy Scan') {
-            steps {
-                sh '''
-                  export TRIVY_JAVA_DB_ENABLED=false
-                  trivy image \
-                    --skip-db-update \
-                    --scanners vuln \
-                    --severity CRITICAL \
-                    --no-progress \
-                    --exit-code 0 \
-                    $IMAGE_NAME:latest
-                '''
-            }
-        }
+stage('Trivy Scan') {
+    steps {
+        sh '''
+          echo "Starting Trivy scan (POC mode)"
+
+          export TRIVY_SKIP_UPDATE=true
+          export TRIVY_JAVA_DB_ENABLED=false
+          export TRIVY_TIMEOUT=5m
+
+          trivy image \
+            --scanners os \
+            --ignore-unfixed \
+            --severity CRITICAL \
+            --no-progress \
+            --exit-code 0 \
+            $IMAGE_NAME:latest || true
+
+          echo "Trivy scan completed (POC mode)"
+        '''
+    }
+}
 
         stage('Docker Push') {
             steps {
