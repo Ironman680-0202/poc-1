@@ -44,23 +44,18 @@ pipeline {
             }
         }
 
-       stage('Trivy Scan') {
+      stage('Trivy Scan') {
     steps {
-        timeout(time: 2, unit: 'MINUTES') {
-            sh '''
-            IMAGE_ID=$(docker images -q $IMAGE_NAME:latest)
- 
-            trivy image \
-              --cache-dir /opt/trivy-cache \
-              --skip-db-update \
-              --scanners vuln \
-              --severity HIGH,CRITICAL \
-              --no-progress \
-              --timeout 60s \
-              --exit-code 0 \
-              $IMAGE_ID || true
-            '''
-        }
+        sh '''
+        TRIVY_JAVA_DB_ENABLED=false trivy image \
+          --skip-db-update \
+          --offline-scan \
+          --scanners vuln \
+          --severity CRITICAL \
+          --no-progress \
+          --exit-code 0 \
+          sandeep680/poc-1:latest
+        '''
     }
 }
 
